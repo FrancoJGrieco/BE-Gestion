@@ -1,8 +1,8 @@
 const express = require("express");
+const sequelize = require('./db');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const { client } = require("./config/connectToDb.js");
 const productosController = require("./controllers/productosController.js");
 
 require('dotenv').config()
@@ -25,7 +25,15 @@ app.post("/productos", productosController.createProducto);
 app.put("/productos/:id", productosController.updateProducto);
 app.delete("/productos/:id", productosController.deleteProducto);
 
-client.connect();
-app.listen(process.env.PORT, () => {
-	console.log(`server listening on port http://localhost:5433`);
-});
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Conexión exitosa a PostgreSQL');
+    
+    app.listen(process.env.PORT, () => {
+      console.log(`Server listening on http://localhost:${process.env.PORT}`);
+    });
+  } catch (err) {
+    console.error('Error conectando a la DB:', err);
+  }
+})();
