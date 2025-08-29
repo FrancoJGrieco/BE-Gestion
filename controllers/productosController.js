@@ -4,7 +4,6 @@ const { Producto } = require('../models')
 const fetchProductos = async (req, res) => {
 	try {
 		const productos = await Producto.findAll()
-		console.log(productos)
 
 		return res.status(200).json({ success: true, productos });
 	} catch (err) {
