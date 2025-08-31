@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const productosController = require("./controllers/productosController.js");
+const cuentasController = require("./controllers/cuentasController.js");
 
 require('dotenv').config()
 const app = express();
@@ -18,7 +19,16 @@ app.use(cors({
 	exposedHeaders: ['Authorization']
 }));
 
-// app.get('/', () => { console.log('holamundo') })
+// Rutas cuentas
+app.post('/signup', cuentasController.signup)
+app.post('/login', cuentasController.login)
+app.post('/logout', cuentasController.logout)
+app.get('/accounts', cuentasController.fetchAccounts)
+app.put('/update_account/:id', cuentasController.modAccount)
+app.delete('/delete_account/:id', cuentasController.deleteAccount)
+app.get('/check-auth', cuentasController.checkAuth)
+
+// Rutas de productos
 app.get("/productos", productosController.fetchProductosName);
 app.get("/productos/:id", productosController.fetchProducto);
 app.post("/productos", productosController.createProducto);

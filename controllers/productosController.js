@@ -112,7 +112,7 @@ const deleteProducto = async (req, res) => {
 			}
 		})
 
-		return res.json({ success: true, producto: rows[0] });
+		return res.json({ success: true, producto });
 	} catch (err) {
 		errReturn(res, err, "(deleteProducto) Error al eliminar el producto:");
 	}

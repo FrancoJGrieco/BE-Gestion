@@ -24,3 +24,14 @@ content-type: application/json
 }
 #####
 DELETE http://localhost:5433/productos/rere
+
+#####
+GET http://localhost:5433/accounts
+#####
+POST http://localhost:5433/signup
+content-type: application/json
+
+{
+    "user": "franco",
+    "password": "asd123" 
+}
