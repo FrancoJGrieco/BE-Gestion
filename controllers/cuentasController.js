@@ -10,18 +10,18 @@ const login = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Usuario y contraseña son obligatorios' })
     }
 
-    const usuario = await Cuenta.findOne({ user_e: user })
-    if (!usuario) {
+    const cuenta = await Cuenta.findOne({ user_e: user })
+    if (!cuenta) {
       return res.status(401).json({ success: false, message: 'Credenciales inválidas' })
     }
 
-    const passwordMatch = await bcrypt.compareSync(password, usuario.password)
+    const passwordMatch = await bcrypt.compareSync(password, cuenta.dataValues.password_e)
     if (!passwordMatch) {
       return res.status(401).json({ success: false, message: 'Credenciales inválidas' })
     }
 
     const exp = Date.now() + 1000 * 60 * 60 * 8
-    const token = jwt.sign({ sub: usuario.id, exp }, process.env.SECRET)
+    const token = jwt.sign({ sub: cuenta.dataValues.id, exp }, process.env.SECRET)
 
     res.cookie('Authorization', token, {
       expires: new Date(exp),

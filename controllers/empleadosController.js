@@ -130,10 +130,10 @@ const deleteEmpleado = async (req, res) => {
 };
 
 module.exports = {
-	fetchProductos,
-	fetchProductosName,
-	fetchProducto,
-	createProducto,
-	updateProducto,
-	deleteProducto,
+	fetchEmpleados,
+	fetchEmpleadosName,
+	fetchEmpleado,
+	createEmpleado,
+	updateEmpleado,
+	deleteEmpleado,
 };
