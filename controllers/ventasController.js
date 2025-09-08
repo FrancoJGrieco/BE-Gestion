@@ -50,6 +50,8 @@ const createVenta = async (req, res) => {
 		let detalleVenta = []
 
 		const venta = await Venta.create({
+			numero_ticket,
+			empresa,
 			total,
 			dia: Date.now()
 		})
