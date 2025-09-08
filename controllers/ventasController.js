@@ -1,25 +1,26 @@
 const { errReturn, noSuccess, numVerification } = require("../functions");
-const { Empleado } = require('../models')
+const { Venta } = require('../models')
+const { DetalleVenta } = require('../models')
 
 const fetchVentas = async (req, res) => {
 	try {
-		const empleados = await Empleado.findAll()
+		const ventas = await Venta.findAll()
 
-		return res.status(200).json({ success: true, empleados });
+		return res.status(200).json({ success: true, ventas });
 	} catch (err) {
-		errReturn(res, err, "(fetchEmpleados) Error al obtener empleados:");
+		errReturn(res, err, "(fetchVentas) Error al obtener ventas:");
 	}
 };
 
-const fetchVentasName = async (req, res) => {
+const fetchDetalleVenta = async (req, res) => {
 	try {
-		const empleados = await Empleado.findAll({
-			attributes: ["id", "fname", "lname", "dni"]
-		})
+		const { id } = req.params
 
-		return res.status(200).json({ success: true, empleados });
+		detalleVenta = await DetalleVenta.findAll({ where: venta_id === id })
+
+		return res.status(200).json({ success: true, detalleVenta })
 	} catch (err) {
-		errReturn(res, err, "(fetchEmpleadosName) Error al obtener empleados:");
+		errReturn(res, err, "(fetchDetalleVenta) Error al obtener detalles de la venta:");
 	}
 };
 
@@ -29,85 +30,42 @@ const fetchVenta = async (req, res) => {
 
 		if (!numVerification(res, id, "id")) return;
 
-		const empleado = await Empleado.findByPk(id)
-		if (empleado === null) {
+		const venta = await Venta.findByPk(id)
+		if (venta === null) {
 			throw noSuccess(
 				res,
-				"No se ha encontrado el empleado. Verifique el id.",
+				"No se ha encontrado la venta. Verifique el id.",
 			)
 		}
 
-		return res.status(200).json({ success: true, empleado });
+		return res.status(200).json({ success: true, venta });
 	} catch (err) {
-		errReturn(res, err, "(fetchEmpleado) Error al obtener empleado:");
+		errReturn(res, err, "(fetchVenta) Error al obtener venta:");
 	}
 };
 
 const createVenta = async (req, res) => {
 	try {
-		const { fname, lname, cuit, dni, mail, nacimiento } = req.body;
+		const { numero_ticket, empresa, total, productos } = req.body;
+		let detalleVenta = []
 
-		if (
-			typeof fname !== "string" ||
-			typeof lname !== "string" ||
-			typeof cuit !== "string" ||
-			typeof Number(dni) !== "number" ||
-			typeof mail !== "string"
-		) {
-			return noSuccess(res, "Formato de los valores incorrecto.");
-		}
-
-		const empleado = await Empleado.create({
-			fname,
-			lname,
-			cuit,
-			dni: Number(dni),
-			mail,
-			nacimiento,
+		const venta = await Venta.create({
+			total,
+			dia: Date.now()
 		})
 
-		return res.status(200).json({ success: true, empleado });
+		productos.map(async (producto) => {
+			detalleVenta.push(await DetalleVenta.create({
+				producto: producto.producto,
+				cantidad: producto.cantidad,
+				precio: producto.precio,
+				venta_id: venta.id
+			}))
+		})
+
+		return res.status(200).json({ success: true, venta, detalleVenta });
 	} catch (err) {
-		errReturn(res, err, "(createEmpleado) Error al crear empleado:");
-	}
-};
-
-const updateVenta = async (req, res) => {
-	try {
-		const { id } = req.params;
-		const { fname, lname, cuit, dni, mail, nacimiento } = req.body;
-
-
-		if (!numVerification(res, id, "id")) return;
-
-		if (
-			typeof fname !== "string" ||
-			typeof lname !== "string" ||
-			typeof cuit !== "string" ||
-			typeof Number(dni) !== "number" ||
-			typeof mail !== "string"
-		) {
-			throw noSuccess(res, "Formato de los valores incorrecto.");
-		}
-
-		const empleado = Empleado.update(
-			{
-				fname,
-				lname,
-				cuit,
-				dni: Number(dni),
-				mail,
-				nacimiento,
-			},
-			{
-				where: {
-					id
-				}
-			})
-
-		return res.status(200).json({ success: true, empleado });
-	} catch (err) {
-		errReturn(res, err, "(updateEmpleado) Error al modificar el producto:");
+		errReturn(res, err, "(createVenta) Error al crear venta:");
 	}
 };
 
@@ -117,23 +75,22 @@ const deleteVenta = async (req, res) => {
 
 		if (!numVerification(res, id, "id")) return;
 
-		const empleado = await Empleado.destroy({
+		const venta = await Venta.destroy({
 			where: {
 				id
 			}
 		})
 
-		return res.json({ success: true, empleado });
+		return res.json({ success: true, venta });
 	} catch (err) {
-		errReturn(res, err, "(deleteEmpleado) Error al eliminar el empleado:");
+		errReturn(res, err, "(deleteVenta) Error al eliminar el venta:");
 	}
 };
 
 module.exports = {
 	fetchVentas,
-	fetchVentasName,
+	fetchDetalleVenta,
 	fetchVenta,
 	createVenta,
-	updateVenta,
 	deleteVenta,
 };

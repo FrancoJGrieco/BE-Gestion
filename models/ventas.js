@@ -7,6 +7,14 @@ module.exports = (sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
+    numero_ticket: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    empresa: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
     total: {
       type: DataTypes.DOUBLE,
       allowNull: false
