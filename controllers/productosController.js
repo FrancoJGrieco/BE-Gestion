@@ -14,7 +14,7 @@ const fetchProductos = async (req, res) => {
 const fetchProductosName = async (req, res) => {
 	try {
 		const productos = await Producto.findAll({
-			attributes: ["id", "name"]
+			attributes: ["id", "name", "codigo"]
 		})
 
 		return res.status(200).json({ success: true, productos });
@@ -45,10 +45,11 @@ const fetchProducto = async (req, res) => {
 
 const createProducto = async (req, res) => {
 	try {
-		const { name, price, cant } = req.body;
+		const { name, codigo , price, cant} = req.body;
 
 		if (
 			typeof name !== "string" ||
+			typeof codigo !== "string" ||
 			typeof Number(price) !== "number" ||
 			typeof Number(cant) !== "number"
 		) {
@@ -57,6 +58,7 @@ const createProducto = async (req, res) => {
 
 		const producto = await Producto.create({
 			name,
+			codigo,
 			price: Number(price),
 			cant: Number(cant)
 		})
@@ -70,12 +72,13 @@ const createProducto = async (req, res) => {
 const updateProducto = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const { name, price, cant } = req.body;
+		const { name, codigo , price, cant } = req.body;
 
 		if (!numVerification(res, id, "id")) return;
 
 		if (
 			typeof name !== "string" ||
+			typeof codigo !== "string" ||
 			typeof Number(price) !== "number" ||
 			typeof Number(cant) !== "number"
 		) {
@@ -85,6 +88,7 @@ const updateProducto = async (req, res) => {
 		const producto = Producto.update(
 			{
 				name,
+				codigo,
 				price: Number(price),
 				cant: Number(cant)
 			},

@@ -11,6 +11,10 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
+    codigo: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
     price: {
       type: DataTypes.DOUBLE,
       allowNull: false

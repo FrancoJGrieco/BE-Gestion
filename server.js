@@ -3,8 +3,9 @@ const sequelize = require('./db');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const productosController = require("./controllers/productosController.js");
 const cuentasController = require("./controllers/cuentasController.js");
+const productosController = require("./controllers/productosController.js");
+const ventasController = require("./controllers/ventasController.js");
 
 require('dotenv').config()
 const app = express();
@@ -34,6 +35,13 @@ app.get("/productos/:id", productosController.fetchProducto);
 app.post("/productos", productosController.createProducto);
 app.put("/productos/:id", productosController.updateProducto);
 app.delete("/productos/:id", productosController.deleteProducto);
+
+// Rutas de ventas
+app.get("/ventas", ventasController.fetchVentas);
+app.get("/ventas/:id", ventasController.fetchVenta);
+app.get("/ventas/detalle_ventas/:id", ventasController.fetchDetalleVenta);
+app.post("/ventas", ventasController.createVenta);
+app.delete("/ventas/:id", ventasController.deleteVenta);
 
 (async () => {
   try {
