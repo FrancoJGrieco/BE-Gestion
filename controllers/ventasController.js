@@ -1,6 +1,7 @@
 const { errReturn, noSuccess, numVerification } = require("../functions");
 const { Venta } = require('../models')
 const { DetalleVenta } = require('../models')
+const { Producto } = require('../models')
 
 const fetchVentas = async (req, res) => {
 	try {
@@ -46,26 +47,34 @@ const fetchVenta = async (req, res) => {
 
 const createVenta = async (req, res) => {
 	try {
-		const { numero_ticket, empresa, total, productos } = req.body;
-		let detalleVenta = []
+		const productosVenta = req.body
 
 		const venta = await Venta.create({
-			numero_ticket,
-			empresa,
-			total,
+			numero_ticket: '0',
+			empresa: 'Tu Empresa',
+			total: 1000.0,
 			dia: Date.now()
 		})
 
-		productos.map(async (producto) => {
-			detalleVenta.push(await DetalleVenta.create({
-				producto: producto.producto,
+		productosVenta.map(async (producto) => {
+			await DetalleVenta.create({
+				producto: producto.producto.name,
 				cantidad: producto.cantidad,
-				precio: producto.precio,
+				precio: producto.producto.price,
 				venta_id: venta.id
-			}))
+			})
+			console.log(producto.producto.cant - producto.cantidad)
+
+			await Producto.update({
+				cant: (producto.producto.cant - producto.cantidad)
+			},{
+				where: {
+					id: producto.producto.id
+				}
+			})
 		})
 
-		return res.status(200).json({ success: true, venta, detalleVenta });
+		return res.status(200).json({ success: true });
 	} catch (err) {
 		errReturn(res, err, "(createVenta) Error al crear venta:");
 	}

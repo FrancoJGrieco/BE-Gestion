@@ -3,7 +3,9 @@ const { Producto } = require('../models')
 
 const fetchProductos = async (req, res) => {
 	try {
-		const productos = await Producto.findAll()
+		const productos = await Producto.findAll({
+			order: [['name', 'ASC']]
+		})
 
 		return res.status(200).json({ success: true, productos });
 	} catch (err) {
@@ -45,7 +47,7 @@ const fetchProducto = async (req, res) => {
 
 const createProducto = async (req, res) => {
 	try {
-		const { name, codigo , price, cant} = req.body;
+		const { name, codigo, price, cant } = req.body;
 
 		if (
 			typeof name !== "string" ||
@@ -72,7 +74,7 @@ const createProducto = async (req, res) => {
 const updateProducto = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const { name, codigo , price, cant } = req.body;
+		const { name, codigo, price, cant } = req.body;
 
 		if (!numVerification(res, id, "id")) return;
 
