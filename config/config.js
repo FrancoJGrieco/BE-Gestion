@@ -3,7 +3,7 @@ require('dotenv').config()
 module.exports = {
   development: {
     host: process.env.DB_HOSTNAME,
-    user: process.env.DB_USER,
+    username: process.env.DB_USER,
     port: process.env.DB_PORT,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME_DEV,
@@ -11,7 +11,7 @@ module.exports = {
   },
   test: {
     host: process.env.DB_HOSTNAME,
-    user: process.env.DB_USER,
+    username: process.env.DB_USER,
     port: process.env.DB_PORT,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME_TEST,
@@ -19,7 +19,7 @@ module.exports = {
   },
   production: {
     host: process.env.DB_HOSTNAME,
-    user: process.env.DB_USER,
+    username: process.env.DB_USER,
     port: process.env.DB_PORT,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME_PROD,

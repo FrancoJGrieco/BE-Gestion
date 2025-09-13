@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Cuenta } = require('../models')
+const { errReturn, numVerification } = require('../functions')
 
 const login = async (req, res) => {
   try {
@@ -49,24 +50,24 @@ const logout = async (req, res) => {
 
 const signup = async (req, res) => {
   try {
-    const { user, password } = req.body
+    const { user, password, rol, empleado_id } = req.body
 
-    if (!user || !password) {
-      return res.status(400).json({ success: false, message: 'Usuario y contraseña son obligatorios' })
+    if (!user || !password || !rol) {
+      return res.status(400).json({ success: false, message: 'Usuario, contraseña y rol son obligatorios' })
     }
 
     if (password.length < 6) {
       return res.status(400).json({ success: false, message: 'La contraseña debe tener al menos 6 caracteres' })
     }
 
-    const usuarioExistente = await Cuenta.findOne({ where: {user_e: user} })
+    const usuarioExistente = await Cuenta.findOne({ where: { user_e: user } })
     if (usuarioExistente) {
       return res.status(409).json({ success: false, message: 'El usuario ya existe' })
     }
 
     const hashedPassword = bcrypt.hashSync(password, 8)
 
-    await Cuenta.create({ user_e: user, password_e: hashedPassword })
+    await Cuenta.create({ user_e: user, password_e: hashedPassword, rol, empleado_id: empleado_id })
 
     res.sendStatus(201)
   } catch (err) {
@@ -76,66 +77,67 @@ const signup = async (req, res) => {
 }
 
 const fetchAccounts = async (req, res) => {
-  	try {
-		const cuentas = await Cuenta.findAll()
+  try {
+    const cuentas = await Cuenta.findAll()
 
-		return res.status(200).json({ success: true, cuentas });
-	} catch (err) {
-		errReturn(res, err, "(fetchCuentas) Error al obtener cuentas:");
-	}
+    return res.status(200).json({ success: true, cuentas });
+  } catch (err) {
+    errReturn(res, err, "(fetchCuentas) Error al obtener cuentas:");
+  }
 }
 
 const deleteAccount = async (req, res) => {
-  	try {
-		const { id } = req.params;
+  try {
+    const { id } = req.params;
+    console.log(id)
 
-		if (!numVerification(res, id, "id")) return;
+    if (!numVerification(res, id, "id")) return;
 
-		const cuenta = await Cuenta.destroy({
-			where: {
-				id
-			}
-		})
+    const cuenta = await Cuenta.destroy({
+      where: {
+        id
+      }
+    })
 
-		return res.json({ success: true, cuenta });
-	} catch (err) {
-		errReturn(res, err, "(deleteAccount) Error al eliminar la cuenta:");
-	}
+    return res.json({ success: true, cuenta });
+  } catch (err) {
+    errReturn(res, err, "(deleteAccount) Error al eliminar la cuenta:");
+  }
 
 }
 
 const modAccount = async (req, res) => {
-try {
-		const { id } = req.params;
-		const { user, password } = req.body;
+  try {
+    const { id } = req.params;
+    const { user, password } = req.body;
 
-		if (!numVerification(res, id, "id")) return;
+    if (!numVerification(res, id, "id")) return;
 
-		if (
-			typeof user !== "string" ||
-			typeof password !== "string"
-		) {
-			throw noSuccess(res, "Formato de los valores incorrecto.");
-		}
+    if (
+      typeof user !== "string" ||
+      typeof password !== "string"
+    ) {
+      throw noSuccess(res, "Formato de los valores incorrecto.");
+    }
 
-		const cuenta = Cuenta.update(
-			{
+    const cuenta = Cuenta.update(
+      {
         user_e: user,
         password_e: password
-			},
-			{
-				where: {
-					id
-				}
-			})
+      },
+      {
+        where: {
+          id
+        }
+      })
 
-		return res.status(200).json({ success: true, cuenta });
-	} catch (err) {
-		errReturn(res, err, "(modAccount) Error al modificar la cuenta:");
-	}
+    return res.status(200).json({ success: true, cuenta });
+  } catch (err) {
+    errReturn(res, err, "(modAccount) Error al modificar la cuenta:");
+  }
 }
 
-function checkAuth (req, res) {
+function checkAuth(req, res) {
   try {
     if (!req.cookies.Authorization) {
       return res.status(401).json({ success: false, message: 'No autenticado' })

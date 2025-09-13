@@ -15,6 +15,18 @@ content-type: application/json
     "price": 1002.0,
     "cant": 22
 }
+#####
+POST http://localhost:5433/empleados
+content-type: application/json
+
+{
+    "fname": "Franco",
+    "lname": "Grieco",
+    "cuit": "20-40015526-9",
+    "dni": 40015526,
+    "mail": "francogriecoo@gmail.com",
+    "nacimiento": "1996-12-21"
+}
 
 #####
 PUT http://localhost:5433/productos/5
@@ -27,6 +39,8 @@ content-type: application/json
 }
 #####
 DELETE http://localhost:5433/productos/rere
+#####
+DELETE http://localhost:5433/delete_account/2
 
 #####
 GET http://localhost:5433/accounts
@@ -35,6 +49,8 @@ POST http://localhost:5433/signup
 content-type: application/json
 
 {
-    "user": "franco",
-    "password": "asd123" 
+    "user": "franco2",
+    "password": "asd123" ,
+    "rol": "administrador",
+    "empleado_id": null
 }
