@@ -17,7 +17,9 @@ const fetchDetalleVenta = async (req, res) => {
 	try {
 		const { id } = req.params
 
-		detalleVenta = await DetalleVenta.findAll({ where: venta_id === id })
+		const detalleVenta = await DetalleVenta.findAll({ where: {venta_id: id} })
+
+		console.log(detalleVenta)
 
 		return res.status(200).json({ success: true, detalleVenta })
 	} catch (err) {

@@ -33,15 +33,16 @@ const fetchProducto = async (req, res) => {
 
 		const producto = await Producto.findByPk(id)
 		if (producto === null) {
-			throw noSuccess(
+			noSuccess(
 				res,
 				"No se ha encontrado el producto. Verifique el id.",
 			)
+			throw new Error ('No se ha encontrado el producto.')
 		}
 
 		return res.status(200).json({ success: true, producto });
 	} catch (err) {
-		errReturn(res, err, "(fetchProducto) Error al obtener producto:");
+		errReturn(res, err, "(fetchProducto)");
 	}
 };
 

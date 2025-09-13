@@ -1,7 +1,10 @@
 GET http://localhost:5433/productos
 
 #####
-GET http://localhost:5433/productos/1
+GET http://localhost:5433/productos/6
+
+####
+GET http://localhost:5433/ventas/detalle_ventas/6
 
 #####
 POST http://localhost:5433/productos

@@ -23,6 +23,7 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       allowNull: false
     }
+
   }, {
     tableName: 'ventas',
     timestamps: false
