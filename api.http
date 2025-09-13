@@ -16,6 +16,14 @@ content-type: application/json
     "cant": 22
 }
 #####
+GET http://localhost:5433/productos
+content-type: application/json
+
+{
+    "cantidad": 1,
+    "pagina": 2
+}
+#####
 POST http://localhost:5433/empleados
 content-type: application/json
 

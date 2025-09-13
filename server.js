@@ -31,7 +31,7 @@ app.delete('/delete_account/:id', cuentasController.deleteAccount)
 app.get('/check-auth', cuentasController.checkAuth)
 
 // Rutas de productos
-app.get("/productos", productosController.fetchProductos);
+app.get("/productos", productosController.fetchProductosPag);
 app.get("/productos/:id", productosController.fetchProducto);
 app.post("/productos", productosController.createProducto);
 app.put("/productos/:id", productosController.updateProducto);
@@ -59,7 +59,7 @@ app.delete("/empleados/:id", empleadosController.deleteEmpleado);
     console.log("✅ Conexión exitosa a PostgreSQL");
 
     // Sincronizar modelos con la DB
-    await sequelize.sync({ alter: true });
+    // await sequelize.sync({ alter: true });
     // ⚠️ Usa { force: true } solo en desarrollo, porque borra las tablas
 
     console.log("✅ Tablas sincronizadas con la base de datos");

@@ -13,6 +13,19 @@ const fetchProductos = async (req, res) => {
 	}
 };
 
+const fetchProductosPag = async (req, res) => {
+	try {
+		const { cantidad, pagina } = req.body
+		const productos = await Producto.findAll({
+			limit: cantidad,
+			offset: cantidad * (pagina - 1)
+		})
+		return res.status(200).json({ success: true, productos });
+	} catch (err) {
+		console.log(err)
+	}
+}
+
 const fetchProductosName = async (req, res) => {
 	try {
 		const productos = await Producto.findAll({
@@ -37,7 +50,7 @@ const fetchProducto = async (req, res) => {
 				res,
 				"No se ha encontrado el producto. Verifique el id.",
 			)
-			throw new Error ('No se ha encontrado el producto.')
+			throw new Error('No se ha encontrado el producto.')
 		}
 
 		return res.status(200).json({ success: true, producto });
@@ -128,6 +141,7 @@ const deleteProducto = async (req, res) => {
 module.exports = {
 	fetchProductos,
 	fetchProductosName,
+	fetchProductosPag,
 	fetchProducto,
 	createProducto,
 	updateProducto,
