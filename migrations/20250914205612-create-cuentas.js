@@ -17,14 +17,19 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      rol: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       empleado_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'empleados',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+      },
+      rol_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'roles',
           key: 'id'
         },
         onUpdate: 'CASCADE',

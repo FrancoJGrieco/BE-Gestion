@@ -10,8 +10,8 @@ module.exports = {
           model: 'secciones',
           key: 'id',
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION',
       },
       rol_id: {
         type: Sequelize.INTEGER,
@@ -19,8 +19,8 @@ module.exports = {
           model: 'roles',
           key: 'id',
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION',
       },
     })
   },

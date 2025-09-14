@@ -9,15 +9,15 @@ module.exports = {
       {
         user_e: 'franco',
         password_e: passwordHash,
-        rol: 'admin',
         empleado_id: 1,
+        rol_id: 1
 
       },
       {
         user_e: 'admin2@empresa.com',
         password_e: passwordHash,
-        rol: 'admin',
         empleado_id: 2,
+        rol_id: 1
 
       },
 

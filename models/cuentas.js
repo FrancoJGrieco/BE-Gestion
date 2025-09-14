@@ -15,10 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    rol:{
-      type: DataTypes.TEXT,
-      allowNull: false
-    }
 
   }, {
     tableName:  'cuentas',
@@ -30,6 +26,11 @@ module.exports = (sequelize, DataTypes) => {
    Cuenta.associate = (models) => {
     Cuenta.belongsTo(models.Empleado, {
       foreignKey: 'empleado_id',
+      onDelete: 'NO ACTION',
+      onUpdate: 'NO ACTION',
+    })
+    Cuenta.hasOne(models.Rol, {
+      foreignKey: 'rol_id',
       onDelete: 'NO ACTION',
       onUpdate: 'NO ACTION',
     })
