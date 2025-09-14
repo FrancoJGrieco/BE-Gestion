@@ -56,21 +56,15 @@ app.delete("/empleados/:id", empleadosController.deleteEmpleado);
   try {
     // Probar conexión
     await sequelize.authenticate();
-    console.log("✅ Conexión exitosa a PostgreSQL");
-
-    // Sincronizar modelos con la DB
-    // await sequelize.sync({ alter: true });
-    // ⚠️ Usa { force: true } solo en desarrollo, porque borra las tablas
-
-    console.log("✅ Tablas sincronizadas con la base de datos");
+    console.log("Conexión exitosa a PostgreSQL");
 
     // Levantar servidor
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-      console.log(`🚀 Server listening on http://localhost:${PORT}`);
+      console.log(`Server listening on http://localhost:${PORT}`);
     });
   } catch (err) {
-    console.error("❌ Error conectando a la DB:", err);
+    console.error("Error conectando a la DB:", err);
   }
 })();
 
