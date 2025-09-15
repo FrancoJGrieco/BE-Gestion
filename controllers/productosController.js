@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { errReturn, noSuccess, numVerification } = require("../functions");
 const { Producto } = require('../models')
 
@@ -15,28 +16,20 @@ const fetchProductos = async (req, res) => {
 
 const fetchProductosPag = async (req, res) => {
 	try {
-		const { cantidad, pagina } = req.body
+		const { cantidad, pagina, busqueda = '' } = req.params
+		console.log(cantidad, pagina, busqueda)
 		const productos = await Producto.findAll({
 			limit: cantidad,
-			offset: cantidad * (pagina - 1)
+			offset: cantidad * (pagina - 1),
+			where: {
+				name: { [Op.iLike]: '%' + busqueda + '%' }
+			}
 		})
 		return res.status(200).json({ success: true, productos });
 	} catch (err) {
 		console.log(err)
 	}
 }
-
-const fetchProductosName = async (req, res) => {
-	try {
-		const productos = await Producto.findAll({
-			attributes: ["id", "name", "codigo"]
-		})
-
-		return res.status(200).json({ success: true, productos });
-	} catch (err) {
-		errReturn(res, err, "(fetchProductosName) Error al obtener productos:");
-	}
-};
 
 const fetchProducto = async (req, res) => {
 	try {
@@ -140,7 +133,6 @@ const deleteProducto = async (req, res) => {
 
 module.exports = {
 	fetchProductos,
-	fetchProductosName,
 	fetchProductosPag,
 	fetchProducto,
 	createProducto,

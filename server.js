@@ -31,7 +31,7 @@ app.delete('/delete_account/:id', cuentasController.deleteAccount)
 app.get('/check-auth', cuentasController.checkAuth)
 
 // Rutas de productos
-app.get("/productos", productosController.fetchProductosPag);
+app.get("/productos/:cantidad&:pagina", productosController.fetchProductosPag);
 app.get("/productos/:id", productosController.fetchProducto);
 app.post("/productos", productosController.createProducto);
 app.put("/productos/:id", productosController.updateProducto);
