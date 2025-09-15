@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'NO ACTION',
       onUpdate: 'NO ACTION',
     })
-    Rol.belongsToMany(models.Cuenta, {
+    Rol.belongsTo(models.Cuenta, {
       foreignKey: 'rol_id',
       onDelete: 'NO ACTION',
       onUpdate: 'NO ACTION',
