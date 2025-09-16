@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Cuenta } = require('../models')
 const { errReturn, numVerification } = require('../functions')
+const { Op } = require('sequelize')
 
 const login = async (req, res) => {
   try {
@@ -86,6 +87,30 @@ const fetchAccounts = async (req, res) => {
   }
 }
 
+const fetchAccountsPag = async (req, res) => {
+  try {
+    const { cantidad, pagina, busqueda = '' } = req.params
+
+    const cuentas = await Cuenta.findAll({
+      limit: cantidad,
+      offset: cantidad * (pagina - 1),
+      where: {
+        user_e: { [Op.iLike]: '%' + busqueda + '%' }
+      }
+    })
+
+    const count = await Cuenta.count({
+      where: {
+        user_e: { [Op.iLike]: '%' + busqueda + '%' }
+      }
+    })
+
+    return res.status(200).json({ success: true, cuentas, count });
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 const deleteAccount = async (req, res) => {
   try {
     const { id } = req.params;
@@ -157,6 +182,7 @@ module.exports = {
   login,
   logout,
   fetchAccounts,
+  fetchAccountsPag,
   deleteAccount,
   modAccount,
   checkAuth

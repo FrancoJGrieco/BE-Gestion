@@ -16,6 +16,14 @@ module.exports = {
         //id 3
         nombre: 'empleados',
       },
+      {
+        //id 4
+        nombre: 'roles',
+      },
+      {
+        //id 5
+        nombre: 'cuentas',
+      },
     ], {});
   },
 
