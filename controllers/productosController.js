@@ -17,7 +17,7 @@ const fetchProductos = async (req, res) => {
 const fetchProductosPag = async (req, res) => {
 	try {
 		const { cantidad, pagina, busqueda = '' } = req.params
-		console.log(cantidad, pagina, busqueda)
+
 		const productos = await Producto.findAll({
 			limit: cantidad,
 			offset: cantidad * (pagina - 1),
@@ -25,7 +25,13 @@ const fetchProductosPag = async (req, res) => {
 				name: { [Op.iLike]: '%' + busqueda + '%' }
 			}
 		})
-		return res.status(200).json({ success: true, productos });
+
+		const count = await Producto.count({
+			where: {
+				name: { [Op.iLike]: '%' + busqueda + '%' }
+			}
+		})
+		return res.status(200).json({ success: true, productos, count });
 	} catch (err) {
 		console.log(err)
 	}

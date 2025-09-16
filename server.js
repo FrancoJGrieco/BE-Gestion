@@ -31,7 +31,7 @@ app.delete('/delete_account/:id', cuentasController.deleteAccount)
 app.get('/check-auth', cuentasController.checkAuth)
 
 // Rutas de productos
-app.get("/productos/:cantidad&:pagina", productosController.fetchProductosPag);
+app.get("/productos/:cantidad/:pagina/:busqueda?", productosController.fetchProductosPag);
 app.get("/productos/:id", productosController.fetchProducto);
 app.post("/productos", productosController.createProducto);
 app.put("/productos/:id", productosController.updateProducto);
@@ -45,7 +45,7 @@ app.post("/ventas", ventasController.createVenta);
 app.delete("/ventas/:id", ventasController.deleteVenta);
 
 // Rutas de empleados
-app.get("/empleados", empleadosController.fetchEmpleados);
+app.get("/empleados/:cantidad/:pagina/:busqueda?", empleadosController.fetchEmpleadosPag);
 app.get("/empleados/:id", empleadosController.fetchEmpleado);
 app.post("/empleados", empleadosController.createEmpleado);
 app.put("/empleados/:id", empleadosController.updateEmpleado);

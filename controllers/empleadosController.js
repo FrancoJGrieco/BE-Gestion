@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { errReturn, noSuccess, numVerification } = require("../functions");
 const { Empleado } = require('../models')
 
@@ -11,17 +12,29 @@ const fetchEmpleados = async (req, res) => {
 	}
 };
 
-const fetchEmpleadosName = async (req, res) => {
+const fetchEmpleadosPag = async (req, res) => {
 	try {
+		const { cantidad, pagina, busqueda = '' } = req.params
+
 		const empleados = await Empleado.findAll({
-			attributes: ["id", "fname", "lname", "dni"]
+			limit: cantidad,
+			offset: cantidad * (pagina - 1),
+			where: {
+				fname: { [Op.iLike]: '%' + busqueda + '%' }
+			}
 		})
 
-		return res.status(200).json({ success: true, empleados });
+		const count = await Empleado.count({
+			where: {
+				fname: { [Op.iLike]: '%' + busqueda + '%' }
+			}
+		})
+		
+		return res.status(200).json({ success: true, empleados, count });
 	} catch (err) {
-		errReturn(res, err, "(fetchEmpleadosName) Error al obtener empleados:");
+		console.log(err)
 	}
-};
+}
 
 const fetchEmpleado = async (req, res) => {
 	try {
@@ -131,7 +144,7 @@ const deleteEmpleado = async (req, res) => {
 
 module.exports = {
 	fetchEmpleados,
-	fetchEmpleadosName,
+	fetchEmpleadosPag,
 	fetchEmpleado,
 	createEmpleado,
 	updateEmpleado,
