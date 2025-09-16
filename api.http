@@ -1,7 +1,10 @@
 GET http://localhost:5433/productos
 
 #####
-GET http://localhost:5433/productos/1
+GET http://localhost:5433/productos/6
+
+####
+GET http://localhost:5433/ventas/detalle_ventas/6
 
 #####
 POST http://localhost:5433/productos
@@ -11,6 +14,26 @@ content-type: application/json
     "name": "Cosa2",
     "price": 1002.0,
     "cant": 22
+}
+#####
+GET http://localhost:5433/productos
+content-type: application/json
+
+{
+    "cantidad": 1,
+    "pagina": 2
+}
+#####
+POST http://localhost:5433/empleados
+content-type: application/json
+
+{
+    "fname": "Franco",
+    "lname": "Grieco",
+    "cuit": "20-40015526-9",
+    "dni": 40015526,
+    "mail": "francogriecoo@gmail.com",
+    "nacimiento": "1996-12-21"
 }
 
 #####
@@ -24,3 +47,18 @@ content-type: application/json
 }
 #####
 DELETE http://localhost:5433/productos/rere
+#####
+DELETE http://localhost:5433/delete_account/2
+
+#####
+GET http://localhost:5433/accounts
+#####
+POST http://localhost:5433/signup
+content-type: application/json
+
+{
+    "user": "franco2",
+    "password": "asd123" ,
+    "rol": "administrador",
+    "empleado_id": null
+}
