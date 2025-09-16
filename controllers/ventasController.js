@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { errReturn, noSuccess, numVerification } = require("../functions");
 const { Venta } = require('../models')
 const { DetalleVenta } = require('../models')
@@ -12,6 +13,30 @@ const fetchVentas = async (req, res) => {
 		errReturn(res, err, "(fetchVentas) Error al obtener ventas:");
 	}
 };
+
+const fetchVentasPag = async (req, res) => {
+	try {
+		const { cantidad, pagina, busqueda = '' } = req.params
+
+		const ventas = await Venta.findAll({
+			limit: cantidad,
+			offset: cantidad * (pagina - 1),
+			where: {
+				numero_ticket: { [Op.iLike]: '%' + busqueda + '%' }
+			}
+		})
+
+		const count = await Venta.count({
+			where: {
+				numero_ticket: { [Op.iLike]: '%' + busqueda + '%' }
+			}
+		})
+		
+		return res.status(200).json({ success: true, ventas, count });
+	} catch (err) {
+		console.log(err)
+	}
+}
 
 const fetchDetalleVenta = async (req, res) => {
 	try {
@@ -102,6 +127,7 @@ const deleteVenta = async (req, res) => {
 
 module.exports = {
 	fetchVentas,
+	fetchVentasPag,
 	fetchDetalleVenta,
 	fetchVenta,
 	createVenta,

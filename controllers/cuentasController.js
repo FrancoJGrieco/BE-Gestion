@@ -91,6 +91,7 @@ const fetchAccountsPag = async (req, res) => {
   try {
     const { cantidad, pagina, busqueda = '' } = req.params
 
+
     const cuentas = await Cuenta.findAll({
       limit: cantidad,
       offset: cantidad * (pagina - 1),

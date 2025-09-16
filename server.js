@@ -40,6 +40,7 @@ app.delete("/productos/:id", productosController.deleteProducto);
 
 // Rutas de ventas
 app.get("/ventas", ventasController.fetchVentas);
+app.get("/ventas/:cantidad/:pagina/:busqueda?", ventasController.fetchVentasPag);
 app.get("/ventas/:id", ventasController.fetchVenta);
 app.get("/ventas/detalle_ventas/:id", ventasController.fetchDetalleVenta);
 app.post("/ventas", ventasController.createVenta);
