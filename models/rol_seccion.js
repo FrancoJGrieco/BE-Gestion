@@ -2,6 +2,14 @@ const { DataTypes } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
   const RolSeccion = sequelize.define('RolSeccion', {
+    rol_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
+    seccion_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    }
   }, {
     tableName: 'rol_seccion',
     timestamps: false

@@ -7,6 +7,7 @@ const cuentasController = require("./controllers/cuentasController.js");
 const productosController = require("./controllers/productosController.js");
 const ventasController = require("./controllers/ventasController.js");
 const empleadosController = require("./controllers/empleadosController.js");
+const rolesController = require("./controllers/rolesController.js");
 
 require('dotenv').config()
 const app = express();
@@ -52,6 +53,13 @@ app.get("/empleados/:id", empleadosController.fetchEmpleado);
 app.post("/empleados", empleadosController.createEmpleado);
 app.put("/empleados/:id", empleadosController.updateEmpleado);
 app.delete("/empleados/:id", empleadosController.deleteEmpleado);
+
+// Rutas de roles
+app.get("/roles/:cantidad/:pagina/:busqueda?", rolesController.fetchRolesPag);
+app.get("/roles/:id", rolesController.fetchRol);
+app.post("/roles", rolesController.createRol);
+app.put("/roles/:id", rolesController.updateRol);
+app.delete("/roles/:id", rolesController.deleteRol);
 
 
 (async () => {

@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
 
   Rol.associate = (models) => {
     Rol.belongsToMany(models.Seccion, {
-      through: 'rol_seccion',
+      through: { model: models.RolSeccion, timestamps: false },
       foreignKey: 'rol_id',
       onDelete: 'NO ACTION',
       onUpdate: 'NO ACTION',
     })
-    Rol.belongsTo(models.Cuenta, {
+    Rol.hasMany(models.Cuenta, {
       foreignKey: 'rol_id',
       onDelete: 'NO ACTION',
       onUpdate: 'NO ACTION',

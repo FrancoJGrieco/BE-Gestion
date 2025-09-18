@@ -3,6 +3,7 @@ GET http://localhost:5433/productos
 #####
 GET http://localhost:5433/productos/6
 
+
 ####
 GET http://localhost:5433/ventas/detalle_ventas/6
 
@@ -15,14 +16,32 @@ content-type: application/json
     "price": 1002.0,
     "cant": 22
 }
-#####
-GET http://localhost:5433/productos
+
+####
+POST http://localhost:5433/roles
 content-type: application/json
 
 {
-    "cantidad": 1,
-    "pagina": 2
+    "nombre": "rol de prueba"
 }
+
+####
+PUT http://localhost:5433/roles/13
+content-type: application/json
+
+{
+    "nombre": "rol de prueba3"
+}
+
+#####
+GET http://localhost:5433/secciones
+
+#####
+GET http://localhost:5433/productos
+
+#####
+GET http://localhost:5433/roles/10/1/ 
+
 #####
 POST http://localhost:5433/empleados
 content-type: application/json

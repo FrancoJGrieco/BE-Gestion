@@ -77,7 +77,7 @@ const createVenta = async (req, res) => {
 		const productosVenta = req.body
 
 		const venta = await Venta.create({
-			numero_ticket: '0',
+			numero_ticket: '0',//los datos de la empresa tienen que estar en un objeto separado
 			empresa: 'Tu Empresa',
 			total: 1000.0,
 			dia: Date.now()

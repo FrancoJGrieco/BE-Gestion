@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'NO ACTION',
       onUpdate: 'NO ACTION',
     })
-    Cuenta.hasOne(models.Rol, {
+    Cuenta.belongsTo(models.Rol, {
       foreignKey: 'rol_id',
       onDelete: 'NO ACTION',
       onUpdate: 'NO ACTION',
