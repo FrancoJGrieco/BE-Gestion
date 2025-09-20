@@ -17,8 +17,21 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      numero_caja: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      empleado_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'empleados',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       total: {
-        type: Sequelize.DECIMAL(10,2),
+        type: Sequelize.DECIMAL(10, 2),
         allowNull: false
       },
       dia: {

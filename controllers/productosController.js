@@ -21,10 +21,13 @@ const fetchProductosPag = async (req, res) => {
 		const productos = await Producto.findAll({
 			limit: cantidad,
 			offset: cantidad * (pagina - 1),
+			attributes: ['id', 'name', 'codigo'],
 			where: {
 				name: { [Op.iLike]: '%' + busqueda + '%' }
-			}
+			},
+
 		})
+		console.log(productos)
 
 		const count = await Producto.count({
 			where: {
@@ -36,6 +39,28 @@ const fetchProductosPag = async (req, res) => {
 		console.log(err)
 	}
 }
+// const fetchProductosPag = async (req, res) => {
+// 	try {
+// 		const { cantidad, pagina, busqueda = '' } = req.params
+
+// 		const productos = await Producto.findAll({
+// 			limit: cantidad,
+// 			offset: cantidad * (pagina - 1),
+// 			where: {
+// 				name: { [Op.iLike]: '%' + busqueda + '%' }
+// 			}
+// 		})
+
+// 		const count = await Producto.count({
+// 			where: {
+// 				name: { [Op.iLike]: '%' + busqueda + '%' }
+// 			}
+// 		})
+// 		return res.status(200).json({ success: true, productos, count });
+// 	} catch (err) {
+// 		console.log(err)
+// 	}
+// }
 
 const fetchProducto = async (req, res) => {
 	try {

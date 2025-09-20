@@ -2,15 +2,46 @@ const { Op } = require("sequelize");
 const { errReturn, noSuccess, numVerification } = require("../functions");
 const { Venta } = require('../models')
 const { DetalleVenta } = require('../models')
+const { Empleado } = require('../models')
 const { Producto } = require('../models')
 
 const fetchVentas = async (req, res) => {
 	try {
-		const ventas = await Venta.findAll()
+		const ventas = await Venta.findAll({
+			attributes: ['id', 'numero_ticket', 'dia', 'total'],
+			include: [{
+				model: DetalleVenta,
+				attributes: ['id', 'producto', 'precio', 'cantidad'],
+			}]
+		})
 
 		return res.status(200).json({ success: true, ventas });
 	} catch (err) {
 		errReturn(res, err, "(fetchVentas) Error al obtener ventas:");
+	}
+};
+const fetchVentasEmpleado = async (req, res) => {
+	try {
+		const { id } = req.params
+		const ventas = await Venta.findAll({
+			attributes: ['id', 'numero_ticket', 'dia', 'total'],
+			include: [{
+				model: DetalleVenta,
+				attributes: ['id', 'producto', 'precio', 'cantidad'],
+			},
+			{
+				model: Empleado,
+				attributes: ['id', 'fname', 'lname', 'dni', 'cuit']
+			}
+			],
+			where: {
+				empleado_id: id
+			}
+		})
+
+		return res.status(200).json({ success: true, ventas });
+	} catch (err) {
+		errReturn(res, err, "(fetchVentasEmpleado) Error al obtener ventas:");
 	}
 };
 
@@ -31,7 +62,7 @@ const fetchVentasPag = async (req, res) => {
 				numero_ticket: { [Op.iLike]: '%' + busqueda + '%' }
 			}
 		})
-		
+
 		return res.status(200).json({ success: true, ventas, count });
 	} catch (err) {
 		console.log(err)
@@ -42,7 +73,7 @@ const fetchDetalleVenta = async (req, res) => {
 	try {
 		const { id } = req.params
 
-		const detalleVenta = await DetalleVenta.findAll({ where: {venta_id: id} })
+		const detalleVenta = await DetalleVenta.findAll({ where: { venta_id: id } })
 
 		console.log(detalleVenta)
 
@@ -94,7 +125,7 @@ const createVenta = async (req, res) => {
 
 			await Producto.update({
 				cant: (producto.producto.cant - producto.cantidad)
-			},{
+			}, {
 				where: {
 					id: producto.producto.id
 				}
@@ -127,6 +158,7 @@ const deleteVenta = async (req, res) => {
 
 module.exports = {
 	fetchVentas,
+	fetchVentasEmpleado,
 	fetchVentasPag,
 	fetchDetalleVenta,
 	fetchVenta,

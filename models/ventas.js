@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
+    numero_caja: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
     total: {
       type: DataTypes.DOUBLE,
       allowNull: false
@@ -31,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Venta.associate = (models) => {
     Venta.hasMany(models.DetalleVenta, { foreignKey: 'venta_id'})
+    Venta.belongsTo(models.Empleado, {foreignKey: 'empleado_id'})
   }
 
   return Venta

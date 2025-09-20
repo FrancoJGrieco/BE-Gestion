@@ -4,7 +4,9 @@ const { Empleado } = require('../models')
 
 const fetchEmpleados = async (req, res) => {
 	try {
-		const empleados = await Empleado.findAll()
+		const empleados = await Empleado.findAll({
+			attributes: ['id', 'fname']
+		})
 
 		return res.status(200).json({ success: true, empleados });
 	} catch (err) {

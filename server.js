@@ -41,6 +41,7 @@ app.delete("/productos/:id", productosController.deleteProducto);
 
 // Rutas de ventas
 app.get("/ventas", ventasController.fetchVentas);
+app.get("/ventas/empleado/:id", ventasController.fetchVentasEmpleado);
 app.get("/ventas/:cantidad/:pagina/:busqueda?", ventasController.fetchVentasPag);
 app.get("/ventas/:id", ventasController.fetchVenta);
 app.get("/ventas/detalle_ventas/:id", ventasController.fetchDetalleVenta);
@@ -48,6 +49,7 @@ app.post("/ventas", ventasController.createVenta);
 app.delete("/ventas/:id", ventasController.deleteVenta);
 
 // Rutas de empleados
+app.get("/empleados", empleadosController.fetchEmpleados);
 app.get("/empleados/:cantidad/:pagina/:busqueda?", empleadosController.fetchEmpleadosPag);
 app.get("/empleados/:id", empleadosController.fetchEmpleado);
 app.post("/empleados", empleadosController.createEmpleado);
