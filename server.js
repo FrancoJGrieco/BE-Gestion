@@ -1,5 +1,5 @@
 const express = require("express");
-const {sequelize} = require('./models');
+const { sequelize } = require('./models');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
@@ -8,6 +8,7 @@ const productosController = require("./controllers/productosController.js");
 const ventasController = require("./controllers/ventasController.js");
 const empleadosController = require("./controllers/empleadosController.js");
 const rolesController = require("./controllers/rolesController.js");
+const requireAuth = require("./middleware/requireAuth.js");
 
 require('dotenv').config()
 const app = express();
@@ -33,7 +34,7 @@ app.delete('/delete_account/:id', cuentasController.deleteAccount)
 app.get('/check-auth', cuentasController.checkAuth)
 
 // Rutas de productos
-app.get("/productos/:cantidad/:pagina/:busqueda?", productosController.fetchProductosPag);
+app.get("/productos/:cantidad/:pagina/:busqueda?", requireAuth, productosController.fetchProductosPag);
 app.get("/productos/:id", productosController.fetchProducto);
 app.post("/productos", productosController.createProducto);
 app.put("/productos/:id", productosController.updateProducto);
