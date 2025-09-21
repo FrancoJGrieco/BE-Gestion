@@ -12,7 +12,8 @@ async function requireAuth(req, res, next) {
     const user = await Cuenta.findByPk(decoded.sub)
     if (!user) return res.sendStatus(401)
 
-    res.user = user
+    console.log(user)
+    req.user = user
 
     next()
   } catch (err) {

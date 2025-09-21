@@ -9,6 +9,9 @@ GET http://localhost:5433/ventas/empleado/2
 #####
 GET http://localhost:5433/productos/6
 
+#####
+GET http://localhost:5433/cuentas/3
+
 
 ####
 GET http://localhost:5433/ventas/detalle_ventas/6

@@ -20,6 +20,13 @@ module.exports = {
         rol_id: 1
 
       },
+      {
+        user_e: 'cajero1@empresa.com',
+        password_e: passwordHash,
+        empleado_id: 3,
+        rol_id: 2
+
+      },
 
     ], {});
   },

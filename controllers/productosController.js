@@ -27,7 +27,6 @@ const fetchProductosPag = async (req, res) => {
 			},
 
 		})
-		console.log(productos)
 
 		const count = await Producto.count({
 			where: {

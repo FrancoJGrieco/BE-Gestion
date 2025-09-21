@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Cuenta } = require('../models')
+const { Rol } = require('../models')
 const { errReturn, numVerification } = require('../functions')
 const { Op } = require('sequelize')
 
@@ -12,7 +13,7 @@ const login = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Usuario y contraseña son obligatorios' })
     }
 
-    const cuenta = await Cuenta.findOne({ user_e: user })
+    const cuenta = await Cuenta.findOne({where: { user_e: user }})
     if (!cuenta) {
       return res.status(401).json({ success: false, message: 'Credenciales inválidas' })
     }
@@ -112,10 +113,28 @@ const fetchAccountsPag = async (req, res) => {
   }
 }
 
-const deleteAccount = async (req, res) => {
+const fetchAccount = async (req, res) => {
   try {
     const { id } = req.params;
     console.log(id)
+
+    const cuenta = await Cuenta.findByPk(id, {
+      include: [{
+				model: Rol,
+				attributes: ['id', 'nombre'],
+			},
+    ]
+    })
+
+    return res.status(200).json({ success: true, cuenta })
+  } catch (err) {
+    console.log('(fetchAccount) Se produjo un error:', err)
+  }
+}
+
+const deleteAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
 
     if (!numVerification(res, id, "id")) return;
 
@@ -184,6 +203,7 @@ module.exports = {
   logout,
   fetchAccounts,
   fetchAccountsPag,
+  fetchAccount,
   deleteAccount,
   modAccount,
   checkAuth

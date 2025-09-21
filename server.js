@@ -9,6 +9,7 @@ const ventasController = require("./controllers/ventasController.js");
 const empleadosController = require("./controllers/empleadosController.js");
 const rolesController = require("./controllers/rolesController.js");
 const requireAuth = require("./middleware/requireAuth.js");
+const checkRol = require("./middleware/checkRol.js");
 
 require('dotenv').config()
 const app = express();
@@ -29,12 +30,13 @@ app.post('/login', cuentasController.login)
 app.post('/logout', cuentasController.logout)
 app.get('/accounts', cuentasController.fetchAccounts)
 app.get('/cuentas/:cantidad/:pagina/:busqueda?', cuentasController.fetchAccountsPag)
+app.get('/cuentas/:id', cuentasController.fetchAccount)
 app.put('/update_account/:id', cuentasController.modAccount)
 app.delete('/delete_account/:id', cuentasController.deleteAccount)
 app.get('/check-auth', cuentasController.checkAuth)
 
 // Rutas de productos
-app.get("/productos/:cantidad/:pagina/:busqueda?", requireAuth, productosController.fetchProductosPag);
+app.get("/productos/:cantidad/:pagina/:busqueda?", requireAuth, checkRol(['Administrador', 'Deposito']), productosController.fetchProductosPag);
 app.get("/productos/:id", productosController.fetchProducto);
 app.post("/productos", productosController.createProducto);
 app.put("/productos/:id", productosController.updateProducto);
