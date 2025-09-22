@@ -3,7 +3,7 @@ const { Cuenta } = require('../models')
 const { Rol } = require('../models')
 const { Seccion } = require('../models')
 
-function checkRol(rolesPermitidos) {
+function checkRol(seccion) {
   return async (req, res, next) => {
     const token = req.cookies.Authorization
 
@@ -13,8 +13,6 @@ function checkRol(rolesPermitidos) {
     const user = await Cuenta.findByPk(decoded.sub)
     if (!user) return res.sendStatus(401)
 
-    console.log(user)
-    
     const rol = await Rol.findByPk(user.rol_id, {
       attributes: ['id', 'nombre'],
       include: [{
@@ -26,10 +24,9 @@ function checkRol(rolesPermitidos) {
       }]
     })
 
-    if (!rol || !rolesPermitidos.includes(rol.nombre)) {
+    if (!rol || !rol.toJSON().Seccions.find((seccionI) => seccionI.nombre === seccion)) {
       return res.status(403).json({ message: "No tienes permisos" });
     }
-    console.log(rol)
     next();
   };
 }

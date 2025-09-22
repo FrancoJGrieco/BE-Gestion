@@ -24,6 +24,14 @@ module.exports = {
         //id 5
         nombre: 'cuentas',
       },
+      {
+        //id 6
+        nombre: 'turnos',
+      },
+      {
+        //id 7
+        nombre: 'configuracion',
+      },
     ], {});
   },
 

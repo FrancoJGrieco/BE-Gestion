@@ -10,7 +10,7 @@ GET http://localhost:5433/ventas/empleado/2
 GET http://localhost:5433/productos/6
 
 #####
-GET http://localhost:5433/cuentas/3
+GET http://localhost:5433/cuentas/1
 
 
 ####
@@ -80,6 +80,14 @@ DELETE http://localhost:5433/delete_account/2
 
 #####
 GET http://localhost:5433/accounts
+#####
+GET http://localhost:5433/login
+content-type: application/json
+
+{
+    "user": "franco",
+    "password": "asd123" ,
+}
 #####
 POST http://localhost:5433/signup
 content-type: application/json

@@ -44,6 +44,8 @@ const fetchRol = async (req, res) => {
 				}
 			}]
 		})
+
+		console.log(rol)
 		if (rol === null) {
 			throw noSuccess(
 				res,

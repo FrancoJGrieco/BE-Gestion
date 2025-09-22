@@ -17,6 +17,22 @@ module.exports = {
         rol_id: 1,
         seccion_id: 3
       },
+      {
+        rol_id: 1,
+        seccion_id: 4
+      },
+      {
+        rol_id: 1,
+        seccion_id: 5
+      },
+      {
+        rol_id: 1,
+        seccion_id: 6
+      },
+      {
+        rol_id: 1,
+        seccion_id: 7
+      },
       //Cajero
       {
         rol_id: 2,

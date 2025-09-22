@@ -25,46 +25,47 @@ app.use(cors({
 }));
 
 // Rutas cuentas
-app.post('/signup', cuentasController.signup)
+app.post('/signup', requireAuth, cuentasController.signup)
 app.post('/login', cuentasController.login)
-app.post('/logout', cuentasController.logout)
-app.get('/accounts', cuentasController.fetchAccounts)
-app.get('/cuentas/:cantidad/:pagina/:busqueda?', cuentasController.fetchAccountsPag)
+app.post('/logout', requireAuth, cuentasController.logout)
+app.get('/accounts', requireAuth, checkRol('cuentas'), cuentasController.fetchAccounts)// en vez de ponerle un rol le tengo 
+app.get('/cuentas/:cantidad/:pagina/:busqueda?', requireAuth, checkRol('cuentas'), cuentasController.fetchAccountsPag)
 app.get('/cuentas/:id', cuentasController.fetchAccount)
-app.put('/update_account/:id', cuentasController.modAccount)
-app.delete('/delete_account/:id', cuentasController.deleteAccount)
+app.get('/cuentas/usuario/:usuario', cuentasController.fetchAccountName)
+app.put('/update_account/:id', requireAuth, checkRol('cuentas'), cuentasController.modAccount)
+app.delete('/delete_account/:id', requireAuth, checkRol('cuentas'), cuentasController.deleteAccount)
 app.get('/check-auth', cuentasController.checkAuth)
 
 // Rutas de productos
-app.get("/productos/:cantidad/:pagina/:busqueda?", requireAuth, checkRol(['Administrador', 'Deposito']), productosController.fetchProductosPag);
-app.get("/productos/:id", productosController.fetchProducto);
-app.post("/productos", productosController.createProducto);
-app.put("/productos/:id", productosController.updateProducto);
-app.delete("/productos/:id", productosController.deleteProducto);
+app.get("/productos/:cantidad/:pagina/:busqueda?", requireAuth, checkRol('productos'), productosController.fetchProductosPag);
+app.get("/productos/:id", requireAuth, checkRol('productos'), productosController.fetchProducto);
+app.post("/productos", requireAuth, checkRol('productos'), productosController.createProducto);
+app.put("/productos/:id", requireAuth, checkRol('productos'), productosController.updateProducto);
+app.delete("/productos/:id", requireAuth, checkRol('productos'), productosController.deleteProducto);
 
 // Rutas de ventas
-app.get("/ventas", ventasController.fetchVentas);
-app.get("/ventas/empleado/:id", ventasController.fetchVentasEmpleado);
-app.get("/ventas/:cantidad/:pagina/:busqueda?", ventasController.fetchVentasPag);
-app.get("/ventas/:id", ventasController.fetchVenta);
-app.get("/ventas/detalle_ventas/:id", ventasController.fetchDetalleVenta);
-app.post("/ventas", ventasController.createVenta);
-app.delete("/ventas/:id", ventasController.deleteVenta);
+app.get("/ventas", requireAuth, checkRol('ventas'), ventasController.fetchVentas);
+app.get("/ventas/empleado/:id", requireAuth, checkRol('ventas'), ventasController.fetchVentasEmpleado);
+app.get("/ventas/:cantidad/:pagina/:busqueda?", requireAuth, checkRol('ventas'), ventasController.fetchVentasPag);
+app.get("/ventas/:id", requireAuth, checkRol('ventas'), ventasController.fetchVenta);
+app.get("/ventas/detalle_ventas/:id", requireAuth, checkRol('ventas'), ventasController.fetchDetalleVenta);
+app.post("/ventas", requireAuth, checkRol('ventas'), ventasController.createVenta);
+app.delete("/ventas/:id", requireAuth, checkRol('ventas'), ventasController.deleteVenta);
 
 // Rutas de empleados
-app.get("/empleados", empleadosController.fetchEmpleados);
-app.get("/empleados/:cantidad/:pagina/:busqueda?", empleadosController.fetchEmpleadosPag);
-app.get("/empleados/:id", empleadosController.fetchEmpleado);
-app.post("/empleados", empleadosController.createEmpleado);
-app.put("/empleados/:id", empleadosController.updateEmpleado);
-app.delete("/empleados/:id", empleadosController.deleteEmpleado);
+app.get("/empleados", requireAuth, checkRol('empleados'), empleadosController.fetchEmpleados);
+app.get("/empleados/:cantidad/:pagina/:busqueda?", requireAuth, checkRol('empleados'), empleadosController.fetchEmpleadosPag);
+app.get("/empleados/:id", requireAuth, checkRol('empleados'), empleadosController.fetchEmpleado);
+app.post("/empleados", requireAuth, checkRol('empleados'), empleadosController.createEmpleado);
+app.put("/empleados/:id", requireAuth, checkRol('empleados'), empleadosController.updateEmpleado);
+app.delete("/empleados/:id", requireAuth, checkRol('empleados'), empleadosController.deleteEmpleado);
 
 // Rutas de roles
-app.get("/roles/:cantidad/:pagina/:busqueda?", rolesController.fetchRolesPag);
-app.get("/roles/:id", rolesController.fetchRol);
-app.post("/roles", rolesController.createRol);
-app.put("/roles/:id", rolesController.updateRol);
-app.delete("/roles/:id", rolesController.deleteRol);
+app.get("/roles/:cantidad/:pagina/:busqueda?", requireAuth, checkRol('roles'), rolesController.fetchRolesPag);
+app.get("/roles/:id", requireAuth, checkRol('roles'), rolesController.fetchRol);
+app.post("/roles", requireAuth, checkRol('roles'), rolesController.createRol);
+app.put("/roles/:id", requireAuth, checkRol('roles'), rolesController.updateRol);
+app.delete("/roles/:id", requireAuth, checkRol('roles'), rolesController.deleteRol);
 
 
 (async () => {

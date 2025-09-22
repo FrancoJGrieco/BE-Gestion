@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Cuenta } = require('../models')
 const { Rol } = require('../models')
+const { Seccion } = require('../models')
 const { errReturn, numVerification } = require('../functions')
 const { Op } = require('sequelize')
 
@@ -13,7 +14,7 @@ const login = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Usuario y contraseña son obligatorios' })
     }
 
-    const cuenta = await Cuenta.findOne({where: { user_e: user }})
+    const cuenta = await Cuenta.findOne({ where: { user_e: user } })
     if (!cuenta) {
       return res.status(401).json({ success: false, message: 'Credenciales inválidas' })
     }
@@ -116,14 +117,39 @@ const fetchAccountsPag = async (req, res) => {
 const fetchAccount = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id)
 
     const cuenta = await Cuenta.findByPk(id, {
       include: [{
-				model: Rol,
-				attributes: ['id', 'nombre'],
-			},
-    ]
+        model: Rol,
+        attributes: ['id', 'nombre'],
+        include: [
+          {
+            model: Seccion,
+            attributes: ['id', 'nombre'],
+            through: { attributes: [] }
+          }
+        ]
+      },
+      ]
+    })
+
+    return res.status(200).json({ success: true, cuenta })
+  } catch (err) {
+    console.log('(fetchAccount) Se produjo un error:', err)
+  }
+}
+const fetchAccountName = async (req, res) => {
+  try {
+    const { usuario } = req.params;
+    console.log(usuario)
+
+    const cuenta = await Cuenta.findOne({
+      where: { user_e: usuario },
+      include: [{
+        model: Rol,
+        attributes: ['id', 'nombre'],
+      },
+      ]
     })
 
     return res.status(200).json({ success: true, cuenta })
@@ -204,6 +230,7 @@ module.exports = {
   fetchAccounts,
   fetchAccountsPag,
   fetchAccount,
+  fetchAccountName,
   deleteAccount,
   modAccount,
   checkAuth
