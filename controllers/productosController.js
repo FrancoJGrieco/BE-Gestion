@@ -21,7 +21,7 @@ const fetchProductosPag = async (req, res) => {
 		const productos = await Producto.findAll({
 			limit: cantidad,
 			offset: cantidad * (pagina - 1),
-			attributes: ['id', 'name', 'codigo'],
+			attributes: ['id', 'name', 'codigo', 'cant'],
 			where: {
 				name: { [Op.iLike]: '%' + busqueda + '%' }
 			},
