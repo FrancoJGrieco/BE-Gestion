@@ -46,6 +46,7 @@ app.delete("/productos/:id", requireAuth, checkRol('productos'), productosContro
 // Rutas de ventas
 app.get("/ventas", requireAuth, checkRol('ventas'), ventasController.fetchVentas);
 app.get("/ventas/empleado/:id", requireAuth, checkRol('ventas'), ventasController.fetchVentasEmpleado);
+app.get("/ventas/fecha/:start/:end", requireAuth, checkRol('ventas'), ventasController.fetchVentasEmpleadoFecha);
 app.get("/ventas/:cantidad/:pagina/:busqueda?", requireAuth, checkRol('ventas'), ventasController.fetchVentasPag);
 app.get("/ventas/:id", requireAuth, checkRol('ventas'), ventasController.fetchVenta);
 app.get("/ventas/detalle_ventas/:id", requireAuth, checkRol('ventas'), ventasController.fetchDetalleVenta);

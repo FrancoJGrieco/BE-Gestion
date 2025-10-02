@@ -20,6 +20,7 @@ const fetchVentas = async (req, res) => {
 		errReturn(res, err, "(fetchVentas) Error al obtener ventas:");
 	}
 };
+
 const fetchVentasEmpleado = async (req, res) => {
 	try {
 		const { id } = req.params
@@ -36,6 +37,42 @@ const fetchVentasEmpleado = async (req, res) => {
 			],
 			where: {
 				empleado_id: id
+			}
+		})
+
+		return res.status(200).json({ success: true, ventas });
+	} catch (err) {
+		errReturn(res, err, "(fetchVentasEmpleado) Error al obtener ventas:");
+	}
+};
+
+const fetchVentasEmpleadoFecha = async (req, res) => {
+	try {
+		const { start, end } = req.params
+		const startDate = new Date(start)
+		const endDate = new Date(end)
+		console.log('Start:', startDate.toISOString(), "\nEnd:", endDate.toISOString())
+		const ventas = await Venta.findAll({
+			attributes: ['id', 'numero_ticket', 'dia', 'total'],
+			include: [{
+				model: DetalleVenta,
+				attributes: ['id', 'producto', 'precio', 'cantidad'],
+			},
+			{
+				model: Empleado,
+				attributes: ['id', 'fname', 'lname', 'dni', 'cuit']
+			}
+			],
+			// where: {
+			// 	empleado_id: id,
+			// }
+			where:{
+				dia: {
+					[Op.between]: [
+						new Date(startDate).toISOString(),
+						new Date(endDate).toISOString()
+					]
+				}
 			}
 		})
 
@@ -159,6 +196,7 @@ const deleteVenta = async (req, res) => {
 module.exports = {
 	fetchVentas,
 	fetchVentasEmpleado,
+	fetchVentasEmpleadoFecha,
 	fetchVentasPag,
 	fetchDetalleVenta,
 	fetchVenta,
